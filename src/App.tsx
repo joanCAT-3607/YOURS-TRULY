@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { AnimatePresence } from 'motion/react';
 import { Header } from './components/Header';
 import { BottomNavBar } from './components/BottomNavBar';
 import { WelcomeScreen } from './components/WelcomeScreen';
@@ -7,6 +8,7 @@ import { ChatScreen } from './components/ChatScreen';
 import { ResourcesScreen } from './components/ResourcesScreen';
 import { InsightsScreen } from './components/InsightsScreen';
 import { PrivacyScreen } from './components/PrivacyScreen';
+import { PageTransition } from './components/PageTransition';
 
 import { BreathingModal } from './components/BreathingModal';
 import { CampusLinksModal } from './components/CampusLinksModal';
@@ -449,86 +451,111 @@ export default function App() {
         onToggleForceOffline={handleToggleForceOffline}
       />
 
-      {/* Main Content Area (padding-top for fixed header) */}
-      <div className="pt-16 flex-1 flex flex-col">
-        {activeTab === 'welcome' && (
-          <WelcomeScreen
-            onStartTalking={() => {
-              setActiveBotType('wellness');
-              setActiveTab('chat');
-            }}
-            onStartNeonBuddy={() => {
-              setActiveBotType('teen_buddy');
-              setActiveTab('chat');
-            }}
-            onGoToHome={() => setActiveTab('home')}
-            userProfile={userProfile}
-            onOpenProfile={() => setIsProfileOpen(true)}
-            onOpenStressGames={() => setIsStressGamesOpen(true)}
-            feedbackList={feedbackList}
-            onSaveFeedback={handleSaveFeedback}
-            onQuickMoodSelect={(mood) => {
-              handleSaveMoodEntry({ mood, energy: 3 });
-              handleTalkAboutMood(mood, '');
-            }}
-          />
-        )}
+      {/* Main Content Area with Cool Smooth Animated Page Transitions */}
+      <div className="pt-20 flex-1 flex flex-col relative overflow-hidden">
+        <AnimatePresence mode="wait">
+          {activeTab === 'welcome' && (
+            <PageTransition key="page-welcome" pageKey="welcome" variant="sanctuary">
+              <WelcomeScreen
+                onStartTalking={() => {
+                  setActiveBotType('wellness');
+                  setActiveTab('chat');
+                }}
+                onStartNeonBuddy={() => {
+                  setActiveBotType('teen_buddy');
+                  setActiveTab('chat');
+                }}
+                onGoToHome={() => setActiveTab('home')}
+                userProfile={userProfile}
+                onOpenProfile={() => setIsProfileOpen(true)}
+                onOpenStressGames={() => setIsStressGamesOpen(true)}
+                onOpenBreathing={() => setIsBreathingOpen(true)}
+                onOpenSleepAudio={() => setIsSleepAudioOpen(true)}
+                onOpenJournal={() => setIsJournalOpen(true)}
+                onOpenFocusTimer={() => setIsFocusTimerOpen(true)}
+                onOpenCampusLinks={() => setIsCampusLinksOpen(true)}
+                breathingCount={breathingCount}
+                focusMinutes={focusMinutes}
+                feedbackList={feedbackList}
+                onSaveFeedback={handleSaveFeedback}
+                onQuickMoodSelect={(mood) => {
+                  handleSaveMoodEntry({ mood, energy: 3 });
+                  handleTalkAboutMood(mood, '');
+                }}
+              />
+            </PageTransition>
+          )}
 
-        {activeTab === 'home' && (
-          <MoodCheckIn
-            entries={moodEntries}
-            onSaveEntry={handleSaveMoodEntry}
-            onTalkAboutMood={handleTalkAboutMood}
-            userProfile={userProfile}
-            onOpenProfile={() => setIsProfileOpen(true)}
-            onOpenStressGames={() => setIsStressGamesOpen(true)}
-          />
-        )}
+          {activeTab === 'home' && (
+            <PageTransition key="page-home" pageKey="home" variant="sanctuary">
+              <MoodCheckIn
+                entries={moodEntries}
+                onSaveEntry={handleSaveMoodEntry}
+                onTalkAboutMood={handleTalkAboutMood}
+                userProfile={userProfile}
+                onOpenProfile={() => setIsProfileOpen(true)}
+                onOpenStressGames={() => setIsStressGamesOpen(true)}
+              />
+            </PageTransition>
+          )}
 
-        {activeTab === 'chat' && (
-          <ChatScreen
-            messages={chatMessages}
-            teenMessages={teenChatMessages}
-            onSendMessage={handleSendMessage}
-            isLoading={isChatLoading}
-            onOpenBreathing={() => setIsBreathingOpen(true)}
-            onOpenJournal={() => setIsJournalOpen(true)}
-            onOpenStressGames={() => setIsStressGamesOpen(true)}
-            userProfile={userProfile}
-            activeBotType={activeBotType}
-            setActiveBotType={setActiveBotType}
-            buddyProfile={buddyProfile}
-            onUpdateBuddyProfile={setBuddyProfile}
-          />
-        )}
+          {activeTab === 'chat' && (
+            <PageTransition
+              key={`page-chat-${activeBotType}`}
+              pageKey={`chat-${activeBotType}`}
+              variant={activeBotType === 'teen_buddy' ? 'neon' : 'sanctuary'}
+            >
+              <ChatScreen
+                messages={chatMessages}
+                teenMessages={teenChatMessages}
+                onSendMessage={handleSendMessage}
+                isLoading={isChatLoading}
+                onOpenBreathing={() => setIsBreathingOpen(true)}
+                onOpenJournal={() => setIsJournalOpen(true)}
+                onOpenStressGames={() => setIsStressGamesOpen(true)}
+                userProfile={userProfile}
+                activeBotType={activeBotType}
+                setActiveBotType={setActiveBotType}
+                buddyProfile={buddyProfile}
+                onUpdateBuddyProfile={setBuddyProfile}
+              />
+            </PageTransition>
+          )}
 
-        {activeTab === 'resources' && (
-          <ResourcesScreen
-            onOpenBreathing={() => setIsBreathingOpen(true)}
-            onOpenCampusLinks={() => setIsCampusLinksOpen(true)}
-            onOpenJournal={() => setIsJournalOpen(true)}
-            onOpenSleepAudio={() => setIsSleepAudioOpen(true)}
-            onOpenFocusTimer={() => setIsFocusTimerOpen(true)}
-            onOpenStressGames={() => setIsStressGamesOpen(true)}
-          />
-        )}
+          {activeTab === 'resources' && (
+            <PageTransition key="page-resources" pageKey="resources" variant="sanctuary">
+              <ResourcesScreen
+                onOpenBreathing={() => setIsBreathingOpen(true)}
+                onOpenCampusLinks={() => setIsCampusLinksOpen(true)}
+                onOpenJournal={() => setIsJournalOpen(true)}
+                onOpenSleepAudio={() => setIsSleepAudioOpen(true)}
+                onOpenFocusTimer={() => setIsFocusTimerOpen(true)}
+                onOpenStressGames={() => setIsStressGamesOpen(true)}
+              />
+            </PageTransition>
+          )}
 
-        {activeTab === 'insights' && (
-          <InsightsScreen
-            entries={moodEntries}
-            breathingCount={breathingCount}
-            focusMinutes={focusMinutes}
-            onOpenBreathing={() => setIsBreathingOpen(true)}
-            onOpenChat={() => setActiveTab('chat')}
-          />
-        )}
+          {activeTab === 'insights' && (
+            <PageTransition key="page-insights" pageKey="insights" variant="sanctuary">
+              <InsightsScreen
+                entries={moodEntries}
+                breathingCount={breathingCount}
+                focusMinutes={focusMinutes}
+                onOpenBreathing={() => setIsBreathingOpen(true)}
+                onOpenChat={() => setActiveTab('chat')}
+              />
+            </PageTransition>
+          )}
 
-        {activeTab === 'privacy' && (
-          <PrivacyScreen
-            onClearAllData={handleClearAllData}
-            onBack={() => setActiveTab('home')}
-          />
-        )}
+          {activeTab === 'privacy' && (
+            <PageTransition key="page-privacy" pageKey="privacy" variant="sanctuary">
+              <PrivacyScreen
+                onClearAllData={handleClearAllData}
+                onBack={() => setActiveTab('home')}
+              />
+            </PageTransition>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Bottom Navigation Bar on Mobile */}

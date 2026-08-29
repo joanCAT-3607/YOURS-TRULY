@@ -27,6 +27,7 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [neonTheme, setNeonTheme] = useState<NeonThemeColor>('cyan');
+  const [isLightMode, setIsLightMode] = useState(true); // Default to light neon colour
   const [isStealthMode, setIsStealthMode] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
@@ -42,55 +43,67 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading, isSpamming]);
 
-  // Color mappings
+  // Comprehensive Light & Dark Neon Themes with Glowing Neon Lights
   const themeStyles = {
     cyan: {
-      accent: '#00f0ff',
+      accent: '#06b6d4',
+      accentGlow: 'rgba(6, 182, 212, 0.45)',
       glowClass: 'neon-glow-cyan',
       borderClass: 'neon-border-cyan',
-      textClass: 'text-[#00f0ff]',
-      bgBadge: 'bg-[#00f0ff]/15 text-[#00f0ff] border-[#00f0ff]/30',
-      bubbleAi: 'bg-[#0d1527] border-[#00f0ff]/40 text-cyan-50 shadow-[0_0_15px_rgba(0,240,255,0.15)]',
-      userBubble: 'bg-gradient-to-r from-[#00b4d8] to-[#0077b6] text-white shadow-[0_0_15px_rgba(0,180,216,0.3)]',
-      inputRing: 'focus-within:border-[#00f0ff] focus-within:ring-2 focus-within:ring-[#00f0ff]/40',
-      sendBtn: 'bg-[#00f0ff] hover:bg-[#38bdf8] text-[#050811] shadow-[0_0_15px_rgba(0,240,255,0.4)]',
+      textClass: 'text-cyan-700',
+      badgeClass: 'bg-cyan-50 text-cyan-800 border-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.3)]',
+      bubbleAiLight: 'bg-white/95 border-2 border-cyan-400 text-slate-800 shadow-[0_0_16px_rgba(6,182,212,0.25)]',
+      bubbleAiDark: 'bg-[#0d1527] border-2 border-cyan-400 text-cyan-50 shadow-[0_0_16px_rgba(6,182,212,0.35)]',
+      userBubble: 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-[0_0_18px_rgba(6,182,212,0.45)]',
+      inputRing: 'focus-within:border-cyan-400 focus-within:ring-2 focus-within:ring-cyan-400/50',
+      sendBtn: 'bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-bold shadow-[0_0_16px_rgba(6,182,212,0.5)]',
+      cardBorder: 'border-cyan-400/80 shadow-[0_0_15px_rgba(6,182,212,0.25)]',
     },
     magenta: {
-      accent: '#ff007f',
+      accent: '#f43f5e',
+      accentGlow: 'rgba(244, 63, 94, 0.45)',
       glowClass: 'neon-glow-magenta',
       borderClass: 'neon-border-magenta',
-      textClass: 'text-[#ff007f]',
-      bgBadge: 'bg-[#ff007f]/15 text-[#ff007f] border-[#ff007f]/30',
-      bubbleAi: 'bg-[#1a0f24] border-[#ff007f]/40 text-pink-50 shadow-[0_0_15px_rgba(255,0,127,0.15)]',
-      userBubble: 'bg-gradient-to-r from-[#ff007f] to-[#b026ff] text-white shadow-[0_0_15px_rgba(255,0,127,0.35)]',
-      inputRing: 'focus-within:border-[#ff007f] focus-within:ring-2 focus-within:ring-[#ff007f]/40',
-      sendBtn: 'bg-[#ff007f] hover:bg-[#ff409f] text-white shadow-[0_0_15px_rgba(255,0,127,0.4)]',
+      textClass: 'text-rose-700',
+      badgeClass: 'bg-pink-50 text-rose-800 border-pink-300 shadow-[0_0_10px_rgba(244,63,94,0.3)]',
+      bubbleAiLight: 'bg-white/95 border-2 border-pink-400 text-slate-800 shadow-[0_0_16px_rgba(244,63,94,0.25)]',
+      bubbleAiDark: 'bg-[#1c0e24] border-2 border-pink-400 text-pink-50 shadow-[0_0_16px_rgba(244,63,94,0.35)]',
+      userBubble: 'bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 text-white shadow-[0_0_18px_rgba(244,63,94,0.45)]',
+      inputRing: 'focus-within:border-pink-400 focus-within:ring-2 focus-within:ring-pink-400/50',
+      sendBtn: 'bg-gradient-to-r from-pink-400 to-rose-500 hover:from-pink-300 hover:to-rose-400 text-white font-bold shadow-[0_0_16px_rgba(244,63,94,0.5)]',
+      cardBorder: 'border-pink-400/80 shadow-[0_0_15px_rgba(244,63,94,0.25)]',
     },
     green: {
-      accent: '#39ff14',
+      accent: '#10b981',
+      accentGlow: 'rgba(16, 185, 129, 0.45)',
       glowClass: 'neon-glow-green',
       borderClass: 'neon-border-green',
-      textClass: 'text-[#39ff14]',
-      bgBadge: 'bg-[#39ff14]/15 text-[#39ff14] border-[#39ff14]/30',
-      bubbleAi: 'bg-[#0a180f] border-[#39ff14]/40 text-emerald-50 shadow-[0_0_15px_rgba(57,255,20,0.15)]',
-      userBubble: 'bg-gradient-to-r from-[#10b981] to-[#047857] text-white shadow-[0_0_15px_rgba(16,185,129,0.3)]',
-      inputRing: 'focus-within:border-[#39ff14] focus-within:ring-2 focus-within:ring-[#39ff14]/40',
-      sendBtn: 'bg-[#39ff14] hover:bg-[#4ade80] text-[#050811] shadow-[0_0_15px_rgba(57,255,20,0.4)]',
+      textClass: 'text-emerald-700',
+      badgeClass: 'bg-emerald-50 text-emerald-800 border-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.3)]',
+      bubbleAiLight: 'bg-white/95 border-2 border-emerald-400 text-slate-800 shadow-[0_0_16px_rgba(16,185,129,0.25)]',
+      bubbleAiDark: 'bg-[#0a1b14] border-2 border-emerald-400 text-emerald-50 shadow-[0_0_16px_rgba(16,185,129,0.35)]',
+      userBubble: 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-[0_0_18px_rgba(16,185,129,0.45)]',
+      inputRing: 'focus-within:border-emerald-400 focus-within:ring-2 focus-within:ring-emerald-400/50',
+      sendBtn: 'bg-gradient-to-r from-emerald-400 to-teal-400 hover:from-emerald-300 hover:to-teal-300 text-slate-950 font-bold shadow-[0_0_16px_rgba(16,185,129,0.5)]',
+      cardBorder: 'border-emerald-400/80 shadow-[0_0_15px_rgba(16,185,129,0.25)]',
     },
     purple: {
       accent: '#a855f7',
+      accentGlow: 'rgba(168, 85, 247, 0.45)',
       glowClass: 'neon-glow-purple',
       borderClass: 'neon-border-purple',
-      textClass: 'text-[#c084fc]',
-      bgBadge: 'bg-[#a855f7]/15 text-[#c084fc] border-[#a855f7]/30',
-      bubbleAi: 'bg-[#150d24] border-[#a855f7]/40 text-purple-50 shadow-[0_0_15px_rgba(168,85,247,0.15)]',
-      userBubble: 'bg-gradient-to-r from-[#9333ea] to-[#6366f1] text-white shadow-[0_0_15px_rgba(147,51,234,0.3)]',
-      inputRing: 'focus-within:border-[#a855f7] focus-within:ring-2 focus-within:ring-[#a855f7]/40',
-      sendBtn: 'bg-[#a855f7] hover:bg-[#c084fc] text-white shadow-[0_0_15px_rgba(168,85,247,0.4)]',
+      textClass: 'text-purple-700',
+      badgeClass: 'bg-purple-50 text-purple-800 border-purple-300 shadow-[0_0_10px_rgba(168,85,247,0.3)]',
+      bubbleAiLight: 'bg-white/95 border-2 border-purple-400 text-slate-800 shadow-[0_0_16px_rgba(168,85,247,0.25)]',
+      bubbleAiDark: 'bg-[#170e28] border-2 border-purple-400 text-purple-50 shadow-[0_0_16px_rgba(168,85,247,0.35)]',
+      userBubble: 'bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-600 text-white shadow-[0_0_18px_rgba(168,85,247,0.45)]',
+      inputRing: 'focus-within:border-purple-400 focus-within:ring-2 focus-within:ring-purple-400/50',
+      sendBtn: 'bg-gradient-to-r from-purple-400 to-violet-500 hover:from-purple-300 hover:to-violet-400 text-white font-bold shadow-[0_0_16px_rgba(168,85,247,0.5)]',
+      cardBorder: 'border-purple-400/80 shadow-[0_0_15px_rgba(168,85,247,0.25)]',
     },
   };
 
-  const currentTheme = themeStyles[neonTheme];
+  const currentTheme = themeStyles[neonTheme] || themeStyles.cyan;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -157,25 +170,52 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
   };
 
   return (
-    <div className="w-full flex-1 flex flex-col bg-[#050811] text-gray-100 relative min-h-[calc(100vh-4rem)] cyber-grid-bg selection:bg-cyan-500/30 selection:text-cyan-200">
+    <div
+      className={`w-full flex-1 flex flex-col relative min-h-[calc(100vh-4rem)] transition-colors duration-500 selection:bg-cyan-500/30 ${
+        isLightMode
+          ? 'bg-gradient-to-b from-[#f3faf8] via-[#edf7f9] to-[#f4f6fa] text-slate-800 cyber-grid-light'
+          : 'bg-[#070b14] text-gray-100 cyber-grid-bg'
+      }`}
+    >
+      {/* Ambient Neon Light Orbs in Background */}
+      <div
+        className="absolute top-10 left-1/4 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-40 animate-pulse"
+        style={{ backgroundColor: currentTheme.accentGlow }}
+      ></div>
+      <div
+        className="absolute bottom-20 right-1/4 w-72 h-72 rounded-full blur-3xl pointer-events-none opacity-30 animate-pulse"
+        style={{ backgroundColor: currentTheme.accentGlow }}
+      ></div>
+
       {/* Subtle Scanline Animation */}
-      <div className="scanline-effect"></div>
+      <div className="scanline-effect opacity-40"></div>
 
       {/* Top Cyberpunk Neon Control Header */}
       <div className="w-full max-w-4xl mx-auto px-3 md:px-6 pt-3 pb-2 flex flex-col gap-2.5 z-20">
         {/* Main Companion Bar */}
-        <div className="flex items-center justify-between bg-[#0a0f1d]/90 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-white/10 shadow-lg">
+        <div
+          className={`flex items-center justify-between px-3.5 py-2.5 rounded-2xl border-2 transition-all backdrop-blur-md ${
+            isLightMode
+              ? 'bg-white/90 border-cyan-300 shadow-[0_4px_20px_rgba(6,182,212,0.15)] text-slate-900'
+              : 'bg-[#0d1424]/90 border-cyan-500/40 shadow-lg text-white'
+          }`}
+          style={{ borderColor: currentTheme.accent }}
+        >
           {/* Buddy Profile & Online status */}
           <div className="flex items-center gap-3">
             <button
               id="neon-edit-avatar-btn"
               onClick={() => setIsEditProfileOpen(true)}
-              className="relative p-0.5 rounded-full transition-transform active:scale-95 group"
+              className="relative p-0.5 rounded-full transition-transform active:scale-95 group cursor-pointer"
               title="Customize Friend Name & Persona"
             >
               <div
-                className="w-10 h-10 rounded-full flex items-center justify-center border-2 text-white font-bold transition-all group-hover:scale-105"
-                style={{ borderColor: currentTheme.accent, backgroundColor: '#111927' }}
+                className="w-10 h-10 rounded-full flex items-center justify-center border-2 text-white font-bold transition-all group-hover:scale-105 shadow-md"
+                style={{
+                  borderColor: currentTheme.accent,
+                  backgroundColor: isLightMode ? '#e0f7fa' : '#111927',
+                  boxShadow: `0 0 12px ${currentTheme.accentGlow}`,
+                }}
               >
                 <span
                   className="material-symbols-outlined text-[20px]"
@@ -184,37 +224,74 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
                   {buddyProfile.avatarIcon || 'bolt'}
                 </span>
               </div>
-              <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-green-400 border-2 border-[#050811] animate-pulse"></span>
+              <span className="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-white shadow-[0_0_6px_#10b981] animate-pulse"></span>
             </button>
 
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
-                <span className="font-heading font-bold text-sm md:text-base text-white tracking-wide flex items-center gap-1.5">
+                <span
+                  className={`font-heading font-bold text-sm md:text-base tracking-wide flex items-center gap-1.5 ${
+                    isLightMode ? 'text-slate-900' : 'text-white'
+                  }`}
+                >
                   {buddyProfile.name}
                   {!isStealthMode && (
-                    <span className="text-[10px] px-1.5 py-0.2 rounded font-mono uppercase bg-white/10 text-gray-300">
-                      BOT
+                    <span
+                      className="text-[10px] px-1.5 py-0.2 rounded font-mono uppercase font-bold border shadow-2xs"
+                      style={{
+                        backgroundColor: isLightMode ? '#e0f7fa' : 'rgba(255,255,255,0.1)',
+                        color: currentTheme.accent,
+                        borderColor: currentTheme.accent,
+                      }}
+                    >
+                      NEON BUDDY
                     </span>
                   )}
                 </span>
               </div>
-              <span className="text-[11px] text-gray-400 truncate max-w-[180px] md:max-w-xs flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+              <span
+                className={`text-[11px] truncate max-w-[180px] md:max-w-xs flex items-center gap-1 font-medium ${
+                  isLightMode ? 'text-slate-600' : 'text-gray-400'
+                }`}
+              >
+                <span
+                  className="w-2 h-2 rounded-full animate-ping"
+                  style={{ backgroundColor: currentTheme.accent }}
+                ></span>
                 {buddyProfile.statusText}
               </span>
             </div>
           </div>
 
-          {/* Right Action Tools: Rescue Call, Stealth Mode, & Switch to Wellness */}
+          {/* Right Action Tools: Light/Dark Neon Mode, Rescue Call, Stealth Mode, & Switch to Wellness */}
           <div className="flex items-center gap-1.5 md:gap-2">
+            {/* Toggle Light / Dark Neon Atmosphere */}
+            <button
+              id="neon-light-dark-toggle-btn"
+              onClick={() => setIsLightMode(!isLightMode)}
+              className={`px-2.5 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
+                isLightMode
+                  ? 'bg-amber-50 text-amber-900 border-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.25)] hover:bg-amber-100'
+                  : 'bg-cyan-950/60 text-cyan-300 border-cyan-400/50 shadow-[0_0_8px_rgba(6,182,212,0.3)] hover:bg-cyan-900/60'
+              }`}
+              title={isLightMode ? 'Switch to Midnight Dark Neon' : 'Switch to Luminous Light Neon'}
+            >
+              <span className="material-symbols-outlined text-[15px]">
+                {isLightMode ? 'light_mode' : 'dark_mode'}
+              </span>
+              <span className="hidden sm:inline font-bold">
+                {isLightMode ? 'Light Neon' : 'Dark Neon'}
+              </span>
+            </button>
+
             {/* Rescue Call Button */}
             <button
               id="neon-rescue-call-btn"
               onClick={() => setIsRescueCallOpen(true)}
-              className="px-2.5 py-1.5 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-400 border border-red-500/40 text-xs font-semibold flex items-center gap-1.5 shadow-xs active:scale-95 transition-all"
+              className="px-2.5 py-1.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border-2 border-red-400/60 text-xs font-bold flex items-center gap-1.5 shadow-[0_0_10px_rgba(239,68,68,0.25)] active:scale-95 transition-all cursor-pointer"
               title="Simulate Fake Incoming Phone Call for public escape"
             >
-              <span className="material-symbols-outlined text-[16px] animate-bounce">
+              <span className="material-symbols-outlined text-[16px] text-red-500 animate-bounce">
                 phone_in_talk
               </span>
               <span className="hidden sm:inline">Rescue Call</span>
@@ -224,9 +301,11 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
             <button
               id="neon-stealth-toggle-btn"
               onClick={() => setIsStealthMode(!isStealthMode)}
-              className={`p-2 rounded-xl text-xs font-medium border transition-all ${
+              className={`p-2 rounded-xl text-xs font-medium border transition-all cursor-pointer ${
                 isStealthMode
-                  ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40 shadow-xs'
+                  ? 'bg-cyan-100 text-cyan-900 border-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.3)]'
+                  : isLightMode
+                  ? 'bg-white/80 text-slate-600 border-slate-200 hover:bg-white hover:text-slate-900'
                   : 'bg-white/5 text-gray-400 border-white/10 hover:bg-white/10 hover:text-white'
               }`}
               title="Stealth Incognito Mode (looks like normal iMessage/Discord)"
@@ -240,10 +319,12 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
             <button
               id="neon-sound-toggle-btn"
               onClick={() => setSoundEnabled(!soundEnabled)}
-              className={`p-2 rounded-xl text-xs font-medium border transition-all ${
+              className={`p-2 rounded-xl text-xs font-medium border transition-all cursor-pointer ${
                 soundEnabled
-                  ? 'bg-white/10 text-white border-white/20'
-                  : 'bg-white/5 text-gray-500 border-white/10'
+                  ? isLightMode
+                    ? 'bg-cyan-50 text-cyan-800 border-cyan-300 shadow-2xs'
+                    : 'bg-white/10 text-white border-white/20'
+                  : 'bg-white/5 text-gray-400 border-slate-200'
               }`}
               title="Toggle Typing & Audio SFX"
             >
@@ -256,88 +337,117 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
             <button
               id="neon-switch-wellness-btn"
               onClick={onSwitchToWellness}
-              className="px-3 py-1.5 rounded-xl bg-[#2e7d32]/30 hover:bg-[#2e7d32]/50 text-[#b7f397] border border-[#b7f397]/40 text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95"
+              className="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border-2 border-emerald-400 text-xs font-bold flex items-center gap-1.5 transition-all shadow-[0_0_10px_rgba(16,185,129,0.25)] active:scale-95 cursor-pointer"
               title="Switch to gentle Yours Truly sanctuary mode"
             >
-              <span className="material-symbols-outlined text-[16px]">spa</span>
+              <span className="material-symbols-outlined text-[16px] text-emerald-600">spa</span>
               <span className="hidden md:inline">Sanctuary</span>
             </button>
           </div>
         </div>
 
-        {/* Neon Theme Selector & Quick Cover Utilities (Hidden in Stealth Mode) */}
+        {/* Neon Light Scheme Picker & Quick Cover Utilities (Hidden in Stealth Mode) */}
         {!isStealthMode && (
           <div className="flex items-center justify-between gap-2 overflow-x-auto no-scrollbar py-0.5">
-            {/* Color Scheme Picker */}
-            <div className="flex items-center gap-1.5 bg-[#0a0f1d]/80 px-2.5 py-1 rounded-xl border border-white/10 shrink-0">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 mr-1">
-                Neon:
+            {/* Color Scheme Picker with glowing rings */}
+            <div
+              className={`flex items-center gap-2 px-3 py-1 rounded-xl border shadow-xs shrink-0 ${
+                isLightMode ? 'bg-white/90 border-slate-200' : 'bg-[#0d1424]/90 border-white/10'
+              }`}
+            >
+              <span
+                className={`text-[10px] font-bold uppercase tracking-wider mr-1 flex items-center gap-1 ${
+                  isLightMode ? 'text-slate-600' : 'text-gray-400'
+                }`}
+              >
+                <span className="material-symbols-outlined text-[13px] text-cyan-500">flare</span>
+                <span>Neon Lights:</span>
               </span>
               <button
                 onClick={() => setNeonTheme('cyan')}
-                className={`w-4 h-4 rounded-full transition-transform ${
-                  neonTheme === 'cyan' ? 'scale-125 ring-2 ring-white ring-offset-1 ring-offset-black' : 'opacity-60'
+                className={`w-5 h-5 rounded-full transition-all cursor-pointer ${
+                  neonTheme === 'cyan'
+                    ? 'scale-125 ring-2 ring-cyan-500 shadow-[0_0_10px_#06b6d4]'
+                    : 'opacity-70 hover:opacity-100'
                 }`}
-                style={{ backgroundColor: '#00f0ff' }}
-                title="Cyber Cyan"
+                style={{ backgroundColor: '#06b6d4' }}
+                title="Electric Cyan Lights"
               />
               <button
                 onClick={() => setNeonTheme('magenta')}
-                className={`w-4 h-4 rounded-full transition-transform ${
-                  neonTheme === 'magenta' ? 'scale-125 ring-2 ring-white ring-offset-1 ring-offset-black' : 'opacity-60'
+                className={`w-5 h-5 rounded-full transition-all cursor-pointer ${
+                  neonTheme === 'magenta'
+                    ? 'scale-125 ring-2 ring-pink-500 shadow-[0_0_10px_#f43f5e]'
+                    : 'opacity-70 hover:opacity-100'
                 }`}
-                style={{ backgroundColor: '#ff007f' }}
-                title="Neon Magenta"
+                style={{ backgroundColor: '#f43f5e' }}
+                title="Neon Magenta Lights"
               />
               <button
                 onClick={() => setNeonTheme('green')}
-                className={`w-4 h-4 rounded-full transition-transform ${
-                  neonTheme === 'green' ? 'scale-125 ring-2 ring-white ring-offset-1 ring-offset-black' : 'opacity-60'
+                className={`w-5 h-5 rounded-full transition-all cursor-pointer ${
+                  neonTheme === 'green'
+                    ? 'scale-125 ring-2 ring-emerald-500 shadow-[0_0_10px_#10b981]'
+                    : 'opacity-70 hover:opacity-100'
                 }`}
-                style={{ backgroundColor: '#39ff14' }}
-                title="Acid Lime"
+                style={{ backgroundColor: '#10b981' }}
+                title="Radiant Lime Lights"
               />
               <button
                 onClick={() => setNeonTheme('purple')}
-                className={`w-4 h-4 rounded-full transition-transform ${
-                  neonTheme === 'purple' ? 'scale-125 ring-2 ring-white ring-offset-1 ring-offset-black' : 'opacity-60'
+                className={`w-5 h-5 rounded-full transition-all cursor-pointer ${
+                  neonTheme === 'purple'
+                    ? 'scale-125 ring-2 ring-purple-500 shadow-[0_0_10px_#a855f7]'
+                    : 'opacity-70 hover:opacity-100'
                 }`}
                 style={{ backgroundColor: '#a855f7' }}
-                title="Synthwave Purple"
+                title="Ultraviolet Lights"
               />
             </div>
 
-            {/* Quick Public Cover Action Chips */}
+            {/* Quick Public Cover Action Chips with Neon outlines */}
             <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
               <button
                 onClick={handleTriggerSpamBurst}
                 disabled={isSpamming || isLoading}
-                className="px-2.5 py-1 rounded-lg bg-yellow-400/15 hover:bg-yellow-400/25 text-yellow-300 border border-yellow-400/30 text-[11px] font-semibold flex items-center gap-1 shrink-0 transition-all active:scale-95"
+                className="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-[11px] font-bold flex items-center gap-1 shrink-0 transition-all shadow-[0_0_8px_rgba(245,158,11,0.2)] active:scale-95 cursor-pointer"
               >
-                <span className="material-symbols-outlined text-[14px]">bolt</span>
+                <span className="material-symbols-outlined text-[14px] text-amber-600">bolt</span>
                 <span>Spam Me ⚡ (Look Busy)</span>
               </button>
 
               {onOpenStressGames && (
                 <button
                   onClick={onOpenStressGames}
-                  className="px-2.5 py-1 rounded-lg bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-400/30 text-[11px] font-semibold flex items-center gap-1 shrink-0 transition-all active:scale-95"
+                  className="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-300 text-[11px] font-bold flex items-center gap-1 shrink-0 transition-all shadow-[0_0_8px_rgba(168,85,247,0.2)] active:scale-95 cursor-pointer"
                 >
-                  <span className="material-symbols-outlined text-[14px]">sports_esports</span>
+                  <span className="material-symbols-outlined text-[14px] text-purple-600">sports_esports</span>
                   <span>🫧 Fidget Games</span>
                 </button>
               )}
 
               <button
-                onClick={() => handleChipClick("Pretend we're having an intense debate about iPhone vs Android so I look focused")}
-                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 text-[11px] font-medium shrink-0 transition-all"
+                onClick={() =>
+                  handleChipClick("Pretend we're having an intense debate about iPhone vs Android so I look focused")
+                }
+                className={`px-2.5 py-1 rounded-lg border text-[11px] font-medium shrink-0 transition-all cursor-pointer ${
+                  isLightMode
+                    ? 'bg-white/80 hover:bg-white text-slate-700 border-slate-200 shadow-2xs'
+                    : 'bg-white/5 hover:bg-white/10 text-gray-300 border-white/10'
+                }`}
               >
                 📱 Tech Debate
               </button>
 
               <button
-                onClick={() => handleChipClick("Rate my Spotify playlist taste and roast my favorite artists")}
-                className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 text-[11px] font-medium shrink-0 transition-all"
+                onClick={() =>
+                  handleChipClick("Rate my Spotify playlist taste and roast my favorite artists")
+                }
+                className={`px-2.5 py-1 rounded-lg border text-[11px] font-medium shrink-0 transition-all cursor-pointer ${
+                  isLightMode
+                    ? 'bg-white/80 hover:bg-white text-slate-700 border-slate-200 shadow-2xs'
+                    : 'bg-white/5 hover:bg-white/10 text-gray-300 border-white/10'
+                }`}
               >
                 🎧 Aux Check
               </button>
@@ -347,18 +457,24 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
       </div>
 
       {/* Main Chat Scroll Area */}
-      <main className="flex-1 overflow-y-auto px-3 md:px-8 pt-2 pb-36 no-scrollbar space-y-3.5 max-w-4xl mx-auto w-full">
+      <main className="flex-1 overflow-y-auto px-3 md:px-8 pt-2 pb-36 no-scrollbar space-y-3.5 max-w-4xl mx-auto w-full z-10">
         {/* Stealth Mode Notice or Public Space Tag */}
         <div className="flex justify-center my-1">
-          <div className="bg-[#0e1626]/80 px-3.5 py-1 rounded-full text-gray-400 text-[11px] font-mono flex items-center gap-1.5 border border-white/5">
+          <div
+            className={`px-3.5 py-1 rounded-full text-[11px] font-mono flex items-center gap-1.5 border shadow-xs backdrop-blur-sm ${
+              isLightMode
+                ? 'bg-white/90 text-slate-700 border-cyan-200'
+                : 'bg-[#0e1626]/80 text-gray-300 border-white/10'
+            }`}
+          >
             <span
-              className="w-1.5 h-1.5 rounded-full"
+              className="w-2 h-2 rounded-full animate-ping"
               style={{ backgroundColor: currentTheme.accent }}
             ></span>
             <span>
               {isStealthMode
                 ? 'Direct Message • Active'
-                : 'Tech-Savvy Teen Buddy • Public Texting Cover Active'}
+                : 'Light Neon Companion • Stealth Texting Cover Active'}
             </span>
           </div>
         </div>
@@ -380,14 +496,15 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
                   {/* AI Avatar */}
                   {isAI && (
                     <div
-                      className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mb-1 border"
+                      className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mb-1 border-2 shadow-md"
                       style={{
                         borderColor: currentTheme.accent,
-                        backgroundColor: '#0c1322',
+                        backgroundColor: isLightMode ? '#e0f7fa' : '#0c1322',
+                        boxShadow: `0 0 10px ${currentTheme.accentGlow}`,
                       }}
                     >
                       <span
-                        className="material-symbols-outlined text-[15px]"
+                        className="material-symbols-outlined text-[16px]"
                         style={{ color: currentTheme.accent }}
                       >
                         {buddyProfile.avatarIcon || 'bolt'}
@@ -399,14 +516,24 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
                   <div
                     className={`p-3.5 md:p-4 rounded-2xl ${
                       isAI
-                        ? `${currentTheme.bubbleAi} rounded-bl-xs border`
+                        ? isLightMode
+                          ? `${currentTheme.bubbleAiLight} rounded-bl-xs`
+                          : `${currentTheme.bubbleAiDark} rounded-bl-xs`
                         : `${currentTheme.userBubble} rounded-br-xs`
                     }`}
                   >
-                    <p className="font-body text-sm md:text-[15px] leading-relaxed whitespace-pre-wrap">
+                    <p className="font-body text-sm md:text-[15px] leading-relaxed whitespace-pre-wrap font-medium">
                       {msg.text}
                     </p>
-                    <div className="mt-1 flex items-center justify-end text-[10px] text-gray-400/80">
+                    <div
+                      className={`mt-1 flex items-center justify-end text-[10px] ${
+                        isAI
+                          ? isLightMode
+                            ? 'text-slate-400'
+                            : 'text-gray-400'
+                          : 'text-white/80'
+                      }`}
+                    >
                       {new Date(msg.timestamp).toLocaleTimeString([], {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -417,13 +544,17 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
 
                 {/* AI Suggestion Chips */}
                 {isAI && msg.suggestions && msg.suggestions.length > 0 && !isStealthMode && (
-                  <div className="flex gap-1.5 self-start ml-9 mt-1.5 flex-wrap">
+                  <div className="flex gap-1.5 self-start ml-10 mt-1.5 flex-wrap">
                     {msg.suggestions.map((chip, idx) => (
                       <button
                         key={idx}
                         id={`neon-suggestion-${idx}`}
                         onClick={() => handleChipClick(chip)}
-                        className="bg-[#0e172a] hover:bg-[#1e293b] text-gray-200 px-3 py-1 rounded-full text-xs font-medium border border-white/10 hover:border-cyan-400 shadow-2xs hover:shadow-[0_0_10px_rgba(0,240,255,0.2)] transition-all active:scale-95"
+                        className={`px-3 py-1 rounded-full text-xs font-semibold border transition-all active:scale-95 cursor-pointer ${
+                          isLightMode
+                            ? 'bg-white hover:bg-cyan-50 text-slate-800 border-cyan-300 shadow-2xs hover:shadow-[0_0_12px_rgba(6,182,212,0.3)]'
+                            : 'bg-[#0e172a] hover:bg-[#1e293b] text-gray-200 border-white/10 hover:border-cyan-400 shadow-2xs hover:shadow-[0_0_10px_rgba(6,182,212,0.3)]'
+                        }`}
                       >
                         {chip}
                       </button>
@@ -438,33 +569,44 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
           {(isLoading || isSpamming) && (
             <div className="flex items-end gap-2 self-start max-w-[80%]">
               <div
-                className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 mb-1 border"
+                className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mb-1 border-2 shadow-md"
                 style={{
                   borderColor: currentTheme.accent,
-                  backgroundColor: '#0c1322',
+                  backgroundColor: isLightMode ? '#e0f7fa' : '#0c1322',
+                  boxShadow: `0 0 10px ${currentTheme.accentGlow}`,
                 }}
               >
                 <span
-                  className="material-symbols-outlined text-[15px]"
+                  className="material-symbols-outlined text-[16px]"
                   style={{ color: currentTheme.accent }}
                 >
                   {buddyProfile.avatarIcon || 'bolt'}
                 </span>
               </div>
-              <div className="bg-[#0d1527] border border-white/10 p-3.5 rounded-2xl rounded-bl-xs flex items-center gap-1.5 shadow-lg">
+              <div
+                className={`border-2 p-3.5 rounded-2xl rounded-bl-xs flex items-center gap-1.5 shadow-md ${
+                  isLightMode
+                    ? 'bg-white/95 border-cyan-300 shadow-[0_0_12px_rgba(6,182,212,0.2)]'
+                    : 'bg-[#0d1527] border-cyan-400/40 shadow-lg'
+                }`}
+              >
                 <span
-                  className="w-2 h-2 rounded-full animate-bounce"
+                  className="w-2.5 h-2.5 rounded-full animate-bounce"
                   style={{ backgroundColor: currentTheme.accent }}
                 ></span>
                 <span
-                  className="w-2 h-2 rounded-full animate-bounce [animation-delay:0.2s]"
+                  className="w-2.5 h-2.5 rounded-full animate-bounce [animation-delay:0.2s]"
                   style={{ backgroundColor: currentTheme.accent }}
                 ></span>
                 <span
-                  className="w-2 h-2 rounded-full animate-bounce [animation-delay:0.4s]"
+                  className="w-2.5 h-2.5 rounded-full animate-bounce [animation-delay:0.4s]"
                   style={{ backgroundColor: currentTheme.accent }}
                 ></span>
-                <span className="text-xs text-gray-400 ml-1.5">
+                <span
+                  className={`text-xs ml-1.5 font-bold ${
+                    isLightMode ? 'text-slate-600' : 'text-gray-400'
+                  }`}
+                >
                   {buddyProfile.name} is typing...
                 </span>
               </div>
@@ -476,7 +618,13 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
       </main>
 
       {/* Input Area (Pinned above bottom nav on mobile, at bottom on desktop) */}
-      <div className="fixed bottom-[68px] md:bottom-3 left-0 w-full z-40 bg-gradient-to-t from-[#050811] via-[#050811]/95 to-transparent pt-3 pb-2">
+      <div
+        className={`fixed bottom-[68px] md:bottom-3 left-0 w-full z-40 pt-3 pb-2 transition-colors ${
+          isLightMode
+            ? 'bg-gradient-to-t from-[#f3faf8] via-[#f3faf8]/95 to-transparent'
+            : 'bg-gradient-to-t from-[#070b14] via-[#070b14]/95 to-transparent'
+        }`}
+      >
         <div className="max-w-4xl mx-auto px-3 md:px-8">
           {/* Quick topic starters carousel */}
           {!isStealthMode && (
@@ -485,7 +633,11 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
                 <button
                   key={vibe.id}
                   onClick={() => handleChipClick(vibe.prompt)}
-                  className="bg-[#0b1322]/90 hover:bg-[#142036] text-gray-300 px-3 py-1 rounded-full text-xs font-medium border border-white/10 hover:border-cyan-400 shrink-0 transition-all active:scale-95"
+                  className={`px-3 py-1 rounded-full text-xs font-semibold border shrink-0 transition-all active:scale-95 cursor-pointer ${
+                    isLightMode
+                      ? 'bg-white/95 hover:bg-cyan-50 text-slate-800 border-cyan-200 shadow-2xs hover:border-cyan-400 hover:shadow-[0_0_10px_rgba(6,182,212,0.25)]'
+                      : 'bg-[#0b1322]/90 hover:bg-[#142036] text-gray-300 border-white/10 hover:border-cyan-400'
+                  }`}
                 >
                   {vibe.label}
                 </button>
@@ -495,14 +647,18 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
 
           <form
             onSubmit={handleSubmit}
-            className={`relative flex items-center bg-[#0d1527] rounded-full p-1.5 md:p-2 border border-white/15 ${currentTheme.inputRing} shadow-2xl transition-all`}
+            className={`relative flex items-center rounded-full p-1.5 md:p-2 border-2 ${currentTheme.inputRing} transition-all ${
+              isLightMode
+                ? 'bg-white/95 border-cyan-300 shadow-[0_4px_25px_rgba(6,182,212,0.2)]'
+                : 'bg-[#0d1527] border-white/15 shadow-2xl'
+            }`}
           >
             {/* Quick Rescue Phone Button in input */}
             <button
               type="button"
               id="neon-input-call-btn"
               onClick={() => setIsRescueCallOpen(true)}
-              className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/20 transition-colors rounded-full flex items-center justify-center"
+              className="p-2 text-red-500 hover:text-red-600 hover:bg-red-50 transition-colors rounded-full flex items-center justify-center cursor-pointer"
               title="Trigger Emergency Rescue Call"
             >
               <span className="material-symbols-outlined text-[20px]">phone</span>
@@ -519,17 +675,21 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
                   : `Text ${buddyProfile.name}... (talk about games, music, drama)`
               }
               disabled={isLoading || isSpamming}
-              className="flex-grow bg-transparent border-none focus:outline-none focus:ring-0 font-body text-sm md:text-base text-white placeholder-gray-500 px-2 h-10"
+              className={`flex-grow bg-transparent border-none focus:outline-none focus:ring-0 font-body text-sm md:text-base px-2 h-10 ${
+                isLightMode
+                  ? 'text-slate-900 placeholder-slate-400'
+                  : 'text-white placeholder-gray-500'
+              }`}
             />
 
             <button
               type="submit"
               id="neon-chat-send-btn"
               disabled={!inputValue.trim() || isLoading || isSpamming}
-              className={`${currentTheme.sendBtn} disabled:bg-gray-800 disabled:text-gray-600 w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-all active:scale-95 shrink-0`}
+              className={`${currentTheme.sendBtn} disabled:bg-gray-300 disabled:text-gray-500 w-10 h-10 rounded-full flex items-center justify-center transition-all active:scale-95 shrink-0 cursor-pointer`}
               title="Send text"
             >
-              <span className="material-symbols-outlined text-[18px] fill-icon">send</span>
+              <span className="material-symbols-outlined text-[18px]">send</span>
             </button>
           </form>
         </div>
@@ -537,16 +697,24 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
 
       {/* Customize Buddy Profile Modal */}
       {isEditProfileOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#0b1322] border border-cyan-500/40 rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4 animate-fadeIn">
-            <div className="flex justify-between items-center border-b border-white/10 pb-3">
-              <h3 className="font-heading font-bold text-lg text-white flex items-center gap-2">
-                <span className="material-symbols-outlined text-cyan-400">tune</span>
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div
+            className={`border-2 rounded-3xl p-6 max-w-sm w-full shadow-2xl space-y-4 animate-fadeIn ${
+              isLightMode ? 'bg-white border-cyan-400' : 'bg-[#0b1322] border-cyan-500/40'
+            }`}
+          >
+            <div className="flex justify-between items-center border-b border-slate-200 pb-3">
+              <h3
+                className={`font-heading font-bold text-lg flex items-center gap-2 ${
+                  isLightMode ? 'text-slate-900' : 'text-white'
+                }`}
+              >
+                <span className="material-symbols-outlined text-cyan-500">tune</span>
                 <span>Customize AI Friend</span>
               </h3>
               <button
                 onClick={() => setIsEditProfileOpen(false)}
-                className="text-gray-400 hover:text-white p-1"
+                className="text-gray-400 hover:text-gray-700 p-1 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
@@ -554,7 +722,7 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
 
             <form onSubmit={handleSaveProfile} className="space-y-3">
               <div>
-                <label className="block text-xs font-semibold uppercase text-gray-400 mb-1">
+                <label className="block text-xs font-bold uppercase text-slate-500 mb-1">
                   Friend / Contact Name
                 </label>
                 <input
@@ -562,15 +730,19 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
                   value={editName}
                   onChange={(e) => setEditName(e.target.value)}
                   placeholder="e.g. Alex ⚡, Jordan 🎮, Sarah 🎧"
-                  className="w-full bg-[#111c30] border border-white/20 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400"
+                  className={`w-full border rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-cyan-500 ${
+                    isLightMode
+                      ? 'bg-slate-50 border-slate-300 text-slate-900'
+                      : 'bg-[#111c30] border-white/20 text-white'
+                  }`}
                 />
-                <p className="text-[11px] text-gray-400 mt-1">
+                <p className="text-[11px] text-slate-500 mt-1">
                   Set this to a friend's name to disguise the chat completely in public.
                 </p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase text-gray-400 mb-1">
+                <label className="block text-xs font-bold uppercase text-slate-500 mb-1">
                   Status Message
                 </label>
                 <input
@@ -578,7 +750,11 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
                   value={editStatus}
                   onChange={(e) => setEditStatus(e.target.value)}
                   placeholder="e.g. at the library 📚, playing valorant 🎮"
-                  className="w-full bg-[#111c30] border border-white/20 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400"
+                  className={`w-full border rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:border-cyan-500 ${
+                    isLightMode
+                      ? 'bg-slate-50 border-slate-300 text-slate-900'
+                      : 'bg-[#111c30] border-white/20 text-white'
+                  }`}
                 />
               </div>
 
@@ -586,13 +762,13 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsEditProfileOpen(false)}
-                  className="flex-1 bg-white/10 hover:bg-white/15 text-gray-300 font-medium py-2.5 rounded-xl text-xs"
+                  className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-cyan-400 hover:bg-cyan-300 text-black font-bold py-2.5 rounded-xl text-xs shadow-lg shadow-cyan-400/30"
+                  className="flex-1 bg-gradient-to-r from-cyan-400 to-sky-500 hover:from-cyan-300 hover:to-sky-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs shadow-lg shadow-cyan-400/30 cursor-pointer"
                 >
                   Save Friend Info
                 </button>
@@ -612,3 +788,4 @@ export const NeonChatScreen: React.FC<NeonChatScreenProps> = ({
     </div>
   );
 };
+
