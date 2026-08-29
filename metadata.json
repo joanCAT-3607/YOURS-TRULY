@@ -1,0 +1,6 @@
+{
+  "name": "Yours Truly",
+  "description": "An empathetic AI student companion and digital sanctuary to reflect, process, and find balance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
